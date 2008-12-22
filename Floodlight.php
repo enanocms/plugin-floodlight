@@ -98,34 +98,31 @@ function page_Special_FloodlightJS()
   $aggressive_optimize_html = false;
   
   echo <<<EOF
-addOnloadHook(function()
-{
-  var autofill_schemas = window.autofill_schemas || {};
-  autofill_schemas.floodlight = {
-    init: function(element, fillclass, params)
-    {
-      params = params || {};
-      $(element).autocomplete(makeUrlNS('Special', 'Autofill', 'type=' + fillclass) + '&userinput=', {
-          minChars: 3,
-          formatItem: function(row, _, __)
-          {
-            var type = ( typeof(row.type) == 'string' ) ? row.type : '';
-            var html = '<big>' + row.title + '</big> <small>' + type + '</small>';
-            html += '<br /><small>' + \$lang.get('floodlight_lbl_score') + row.score + '% | ' + row.size + '</small>';
-            return html;
-          },
-          tableHeader: '<tr><th>' + \$lang.get('floodlight_table_heading') + '</th></tr>',
-          showWhenNoResults: true,
-          onItemSelect: function(li)
-          {
-            window.location = makeUrl(li.selectValue.replace(/^go:/, ''));
-          },
-          width: 300,
-          noResultsHTML: '<tr><td class="row1" style="font-size: smaller;">' + \$lang.get('floodlight_msg_no_results') + '</td></tr>',
-      });
-    }
-  };
-});
+var autofill_schemas = window.autofill_schemas || {};
+autofill_schemas.floodlight = {
+  init: function(element, fillclass, params)
+  {
+    params = params || {};
+    $(element).autocomplete(makeUrlNS('Special', 'Autofill', 'type=' + fillclass) + '&userinput=', {
+        minChars: 3,
+        formatItem: function(row, _, __)
+        {
+          var type = ( typeof(row.type) == 'string' ) ? row.type : '';
+          var html = '<big>' + row.title + '</big> <small>' + type + '</small>';
+          html += '<br /><small>' + \$lang.get('floodlight_lbl_score') + row.score + '% | ' + row.size + '</small>';
+          return html;
+        },
+        tableHeader: '<tr><th>' + \$lang.get('floodlight_table_heading') + '</th></tr>',
+        showWhenNoResults: true,
+        onItemSelect: function(li)
+        {
+          window.location = makeUrl(li.selectValue.replace(/^go:/, ''));
+        },
+        width: 300,
+        noResultsHTML: '<tr><td class="row1" style="font-size: smaller;">' + \$lang.get('floodlight_msg_no_results') + '</td></tr>',
+    });
+  }
+};
 EOF;
 }
 
