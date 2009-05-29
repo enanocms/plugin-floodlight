@@ -30,7 +30,7 @@ function floodlight_inject_searchflags(&$return)
   {
     return;
   }
-  $hackme = str_replace('<input name="q"', '<input name="q" autocomplete="off" onkeyup="this.onkeyup = null; this.className = \'autofill floodlight\'; autofill_init_element(this, {});"', $hackme);
+  $hackme = str_replace('<input name="q"', '<input name="q" autocomplete="off" onkeyup="this.setAttribute(\'autocomplete\', \'off\'); this.onkeyup = null; this.className = \'autofill floodlight\'; autofill_init_element(this, {});"', $hackme);
 }
 
 function floodlight_perform_search(&$dataset)
@@ -118,11 +118,30 @@ autofill_schemas.floodlight = {
         {
           window.location = makeUrl(li.selectValue.replace(/^go:/, ''));
         },
-        width: 300,
+        width: 180,
         noResultsHTML: '<tr><td class="row1" style="font-size: smaller;">' + \$lang.get('floodlight_msg_no_results') + '</td></tr>',
     });
   }
 };
+
+function AutofillFloodlight(el, p)
+{
+  p = p || {};
+  var cn_append = ( el.className ) ? ' ' + el.className : '';
+  el.className = 'autofill floodlight' + cn_append;
+  el.onkeyup = null;
+  autofill_init_element(el, p);
+}
+
+addOnloadHook(function()
+  {
+    if ( document.forms[0] && document.forms[0].q )
+    {
+      document.forms[0].q.onkeyup = function() {
+        new AutofillFloodlight(this);
+      };
+    }
+  });
 EOF;
 }
 
