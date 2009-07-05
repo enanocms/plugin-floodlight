@@ -86,6 +86,10 @@ function floodlight_add_js()
 {
   global $db, $session, $paths, $template, $plugins; // Common objects
   $template->add_header('<script type="text/javascript" src="' . makeUrlNS('Special', 'FloodlightJS', false, true) . '"></script>');
+  if ( method_exists($template, 'preload_js') )
+  {
+    $template->preload_js(array('l10n', 'jquery', 'jquery-ui', 'autofill'));
+  }
 }
 
 function page_Special_FloodlightJS()
